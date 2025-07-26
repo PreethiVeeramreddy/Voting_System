@@ -1,1 +1,124 @@
+import java.util.Scanner;
+class VotingSystem 
+{
+	public static void main(String[] args) 
+	{
+        	Scanner sc= new Scanner(System.in); 
+        	System.out.println("Welcome to the Voting System!");
+        	int Candidates;
+        	while(true) 
+		{
+           		System.out.print("Enter the candidates names (at least 2): ");
+            		if(sc.hasNextInt()) 
+			{
+                		Candidates=sc.nextInt();
+                		if(Candidates>=2) 
+				break; 
+                		System.out.println("Please enter at least 2 candidates.");
+            		} 	
+			else 
+			{
+                		System.out.println("Invalid input. Please enter a number.");
+                		sc.next(); 
+           		}
+        	}
+        	sc.nextLine(); 
+		String[] candidateNames=new String[Candidates];
+        	int[] voteCounts=new int[Candidates];
 
+		//Get the names for each candidate
+
+		System.out.println("\nEnter candidate names:");
+        	for(int i=0;i<Candidates;i++) 
+		{
+            		System.out.print("Candidate " + (i + 1) + " name: ");
+            		candidateNames[i]=sc.nextLine();
+            		voteCounts[i]=0;         	
+		}
+		
+		// --- Display Voting Results ---
+		
+        	System.out.println("\n--- Voting Starts ---");
+        	System.out.println("Enter candidate number to vote, or '0' to stop.");
+		int vote;
+        	while(true) 
+		{	
+            		System.out.println("\nCandidates:");
+            		for (int i=0;i<Candidates;i++) 
+			{
+                		System.out.println((i + 1) + ". " + candidateNames[i]);
+            		}
+            		System.out.print("Your vote (1-" + Candidates + ", 0 to stop): ");
+			if (sc.hasNextInt()) 
+			{
+                		vote=sc.nextInt();
+                		if (vote==0) 
+				{
+                    			System.out.println("Voting session ended.");
+                    			break; 
+		                } 
+				else if (vote>=1&&vote<=Candidates) 
+				{
+                    			voteCounts[vote-1]++; 
+	                    		System.out.println("Vote recorded for " + candidateNames[vote - 1] + "!");
+                		} 
+				else 
+				{
+                    			System.out.println("Invalid candidate number.");
+                		}
+            		}	
+	 		else 
+			{
+                		System.out.println("Invalid input. Please enter a number.");
+                		sc.next(); 
+            		}
+        	}	
+
+		//Display the Voting Results 
+
+                System.out.println("\n--- Voting Results ---");
+        	int totalVotes=0;
+        	for (int i=0;i<Candidates;i++) 
+		{
+            		System.out.println(candidateNames[i] + ": " + voteCounts[i] + " votes");
+            		totalVotes=totalVotes+voteCounts[i];
+        	}
+        	System.out.println("Total votes cast: " + totalVotes);
+		
+		//Display the winners
+
+		if (totalVotes==0) 
+		{
+            		System.out.println("No votes were cast.");
+        	} 
+		else 
+		{
+                        int maxVotes=-1;
+            		for(int count:voteCounts) 
+			{
+                		if (count > maxVotes) 
+				{
+                    			maxVotes = count;
+                		}
+            		}
+                        System.out.println("\nWinner(s):");
+            		int winnerCount=0;
+            		for(int i=0;i<Candidates;i++) 
+			{
+                		if(voteCounts[i]==maxVotes) 
+				{
+                    			System.out.println("- " + candidateNames[i] + " (with " + maxVotes + " votes)");
+                   			winnerCount++;
+                		}
+            		}
+
+			//More than one candidate has the maximum votes,it's a tie
+
+			if(winnerCount>1) 
+			{
+                		System.out.println("It's a tie!");
+            		}
+        	}
+		sc.close(); 
+    }
+}
